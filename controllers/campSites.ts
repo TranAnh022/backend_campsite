@@ -4,9 +4,9 @@ import { Request, Response } from "express";
 
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 
-const mapBoxToken = process.env.MAPBOX_TOKEN;
+const mapBoxToken = process.env.MAPBOX_TOKEN as string;
 
-const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken as string });
 
 const cloudinary = require("../cloudinary");
 
