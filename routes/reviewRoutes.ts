@@ -1,13 +1,13 @@
 import express from "express";
 import { createReview, deleteReview } from "../controllers/review";
-import { isLoggedIn } from "../middleware";
+
 const router = express.Router({ mergeParams: true });
 
 
 
-router.post("/", isLoggedIn, createReview)
+router.post("/", createReview)
 
-router.delete("/:reviewId",isLoggedIn,deleteReview)
+router.delete("/:reviewId",deleteReview)
 
 
 module.exports = router;
