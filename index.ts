@@ -34,20 +34,11 @@ const app = express();
 const corsOptions = {
   origin: true,
 };
-
-app.use((req: { method: string; }, res: { setHeader: (arg0: string, arg1: string) => void; sendStatus: (arg0: number) => any; }, next: () => void) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+app.use(function (_req: any, res: { header: (arg0: string, arg1: string | boolean) => void; }, next: () => void) {
+  res.header("Access-Control-Allow-Origin", "https://camping-app.onrender.com");
+  res.header("Access-Control-Allow-Credentials", true);
   next();
 });
-
 app.use(cors(corsOptions));
 //--session--
 
