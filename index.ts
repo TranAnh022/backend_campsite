@@ -60,13 +60,7 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
-
+app.use(cors());
 app.use(express.json());
 app.use(express.static("build"));
 app.use(express.urlencoded({ extended: false })); // because the req.body was not parsered lead to we need to use express.urlencoded to parse the request body
