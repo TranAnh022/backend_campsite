@@ -30,7 +30,12 @@ db.once("open", () => {
 });
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: true,
+};
+
+app.use(cors(corsOptions));
 //--session--
 
 const secret = process.env.SECRET || "thisshouldbeabettersecret!";
@@ -41,7 +46,7 @@ const store = new MongoDBStore({
   touchAfter: 24 * 60 * 60,
 });
 
-store.on("error", function (e:string) {
+store.on("error", function (e: string) {
   console.log("SESSION STORE ERROR", e);
 });
 
@@ -60,7 +65,6 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
-;
 app.use(express.json());
 app.use(express.static("build"));
 app.use(express.urlencoded({ extended: false })); // because the req.body was not parsered lead to we need to use express.urlencoded to parse the request body
