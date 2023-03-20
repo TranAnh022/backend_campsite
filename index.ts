@@ -35,6 +35,19 @@ const corsOptions = {
   origin: true,
 };
 
+app.use((req: { method: string; }, res: { setHeader: (arg0: string, arg1: string) => void; sendStatus: (arg0: number) => any; }, next: () => void) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(cors(corsOptions));
 //--session--
 
