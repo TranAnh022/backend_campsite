@@ -68,7 +68,7 @@ app.use(
 );
 
 app.use(express.json());
-
+app.use(express.static("build"));
 app.use(express.urlencoded({ extended: false })); // because the req.body was not parsered lead to we need to use express.urlencoded to parse the request body
 app.use(methodOverride("_method"));
 
