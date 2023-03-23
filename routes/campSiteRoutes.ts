@@ -11,11 +11,12 @@ import {
   getCampSite,
 } from "../controllers/campSites";
 
+
 const upload = multer({ storage });
 
 router.get("/", getAllCampSite);
 
-router.post("/", upload.single("image"), createCampSite);
+router.post("/",upload.single("image"), createCampSite);
 
 router.get("/:id", getCampSite);
 

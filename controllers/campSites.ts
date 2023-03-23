@@ -52,14 +52,14 @@ export const createCampSite = async (req: Request, res: Response) => {
         limit: 1,
       })
       .send();
-    const userTypeWithId = req.user as UserType & { _id: string };
+     const userTypeWithId = req.user as UserType & { _id: string };
     const { title, location, price, description } = req.body;
 
     const campsite = new CampSite({
       title,
       images: {
-        url: req.file?.path,
-        fileName: req.file?.fieldname,
+        url: req?.file?.path,
+        fileName: req?.file?.fieldname,
       },
       description: description,
       author: userTypeWithId._id,
@@ -69,9 +69,10 @@ export const createCampSite = async (req: Request, res: Response) => {
     });
     await campsite.save();
     res.status(200).json(campsite);
+
   } catch (error) {
-    (error: string) => {
-      res.status(500).send(error);
+    (error: any) => {
+      res.status(500).json({ message: error.message });
     };
   }
 };
