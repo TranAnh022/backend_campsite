@@ -48,7 +48,7 @@ export const createCampSite = async (req: Request, res: Response) => {
   try {
     const geoData = await geocoder
       .forwardGeocode({
-        query: req.body.location,
+        query: req?.body?.location,
         limit: 1,
       })
       .send();
@@ -62,7 +62,7 @@ export const createCampSite = async (req: Request, res: Response) => {
         fileName: req?.file?.fieldname,
       },
       description: description,
-      author: userTypeWithId._id,
+      author: userTypeWithId?._id,
       location,
       price,
       geometry: geoData.body.features[0].geometry,
