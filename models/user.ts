@@ -15,6 +15,7 @@ export const UserSchema = new Schema({
   username: {
     typre: String,
   },
+  resetPasswordToken: String,
 });
 
 UserSchema.set("toJSON", {

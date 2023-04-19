@@ -9,7 +9,7 @@ import {
   editCampsite,
   getAllCampSite,
   getCampSite,
-} from "../controllers/campSites";
+} from "../controllers/campingController";
 
 
 const upload = multer({ storage });

@@ -1,5 +1,5 @@
 import express from "express";
-import { createReview, deleteReview } from "../controllers/review";
+import { createReview, deleteReview } from "../controllers/reviewController";
 
 const router = express.Router({ mergeParams: true });
 

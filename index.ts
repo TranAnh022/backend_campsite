@@ -16,7 +16,7 @@ const cors = require("cors");
 //-- connect to mongoose ---
 const MongoDBStore = require("connect-mongo")(session);
 
-//const dbUrl = process.env.DB_URL
+
 const dbUrl = process.env.MONGO_URL || "mongodb://localhost:27017/campsite";
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,

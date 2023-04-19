@@ -43,11 +43,9 @@ export const logout = async (
   next: NextFunction
 ) => {
   req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/camgsites");
+    if (err) return next(err);
   });
+  res.status(200).json({message: "logout"})
 };
 
 export const sendCode = async (req: Request, res: Response) => {
@@ -57,6 +55,9 @@ export const sendCode = async (req: Request, res: Response) => {
     res.status(404).json({ message: `There is no user with email :${email}` });
   } else {
     const code = crypto.randomBytes(6).toString("hex");
+     user.resetPasswordToken = code;
+     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
+     await user.save();
     let config = {
       service: "gmail",
       auth: {
@@ -77,7 +78,8 @@ export const sendCode = async (req: Request, res: Response) => {
     let response = {
       body: {
         name: `${user?.username}`,
-        intro: `Here is the code help you to verifile your account ${email} in Campingsite :`,
+        intro: `Here is the code help you to verifile your
+        account ${email} in Campingsite :`,
         table: {
           data: { description: [`${code}`] },
         },
@@ -109,19 +111,28 @@ export const sendCode = async (req: Request, res: Response) => {
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
-    await user
-      .setPassword(password)
-      .then(() => {
-        user.save();
-        res.status(200).json({ message: "successfully change password" });
-      })
-      .catch((error: any) => {
-        res.status(400).json({ message: error.message });
-      });
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
+const { email, password,resetToken } = req.body;
+const user = await User.findOne({ email: email });
+if (
+  !user ||
+  user.resetPasswordToken !== resetToken ||
+  user.resetPasswordExpires < new Date()
+) {
+  return res.status(400).json({ message: "Invalid or expired reset token" });
+} else {
+ try {
+   return await user
+     .setPassword(password)
+     .then(() => {
+       user.save();
+       res.status(200).json({ message: "successfully change password" });
+     })
+     .catch((error: any) => {
+       res.status(400).json({ message: error.message });
+     });
+ } catch (error: any) {
+  return res.status(400).json({ message: error.message });
+ }
+}
+
 };
