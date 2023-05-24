@@ -59,7 +59,7 @@ export const createCampSite = async (req: Request, res: Response) => {
       title,
       images: {
         url: req?.file?.path,
-        fileName: req?.file?.fieldname,
+        fileName: req?.file?.filename,
       },
       description: description,
       author: userTypeWithId?._id,
@@ -95,7 +95,7 @@ export const editCampsite = async (req: Request, res: Response) => {
     } else {
       image = {
         url: req.file?.path,
-        fileName: req.file?.fieldname,
+        fileName: req.file?.filename,
       };
     }
 
@@ -127,6 +127,9 @@ export const editCampsite = async (req: Request, res: Response) => {
 export const deleteCampsite = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const campsite = await CampSite.findById(id);
+    console.log(campsite.images.fileName);
+    await cloudinary?.uploader?.destroy(campsite.images.fileName);
     await CampSite.findByIdAndDelete(id);
     res.status(200).json("deleted successfully!!!");
   } catch (error: any) {
